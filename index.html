@@ -1,16 +1,62 @@
-<?php 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globepawa</title>
+</head>
+<body>
+    
+    <script>
+const https = require('https');
+const express = require('express');
 
-$update = json_decode(file_get_contents('php://input'), true);
-
-$message = $update['message']['text'];
-$chat_id = $update['message']['chat']['id'];
+const app = express();
 
 
-$url = "https://api.telegram.org/bot<6175186442:AAEDSdrlozHZHFm1L2sgaalUYGAmydyts5A>/sendMessage?chat_id=".$chat_id."&text=".urlencode("Hello, world!");
-file_get_contents($url);
+app.post('/https://globepawa.github.io/gpawa-bot/index.html', express.json(), (req, res) => {
+    const update = req.body;
+    // Handle the update here
+    res.sendStatus(200);
+});
 
-$url = "https://api.telegram.org/bot<6175186442:AAEDSdrlozHZHFm1L2sgaalUYGAmydyts5A>/setWebhook?url=".urlencode("https://example.com/telegram-bot.php");
-file_get_contents($url);
+const sendMessage = (chatId, message) => {
+    const url = "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}";
+    https.get(url);
+};
+
+app.post('/https://globepawa.github.io/gpawa-bot/index.html', express.json(), (req, res) => {
+    const update = req.body;
+    const message = update.message.text;
+    const chatId = update.message.chat.id;
+
+    if (message === '/start') {
+        sendMessage(chatId, 'Hello! Welcome to my bot.');
+    } else if (message === '/help') {
+        sendMessage(chatId, 'This bot can help you with various tasks. Here are some available commands:');
+        sendMessage(chatId, '/start - Start the bot');
+        sendMessage(chatId, '/help - Get help');
+        sendMessage(chatId, '/about - Learn about the bot');
+    } else if (message === '/about') {
+        sendMessage(chatId, 'This bot was created by John Doe. Contact me at john.doe@example.com.');
+    } else {
+        sendMessage(chatId, 'Sorry, I don\'t understand that command. Type /help to see a list of available commands.');
+    }
+
+    res.sendStatus(200);
+});
 
 
-?>
+const webhookUrl = "https://globepawa.github.io/gpawa-bot/index.html>";
+const botToken = '6175186442:AAEDSdrlozHZHFm1L2sgaalUYGAmydyts5A';
+
+const url = "https://api.telegram.org/bot${botToken}/setWebhook?url=${encodeURIComponent(webhookUrl)}";
+https.get(url);
+
+app.listen(3000, () => {
+    console.log('Telegram webhook listening on port 3000');
+});
+    </script>
+</body>
+</html>
